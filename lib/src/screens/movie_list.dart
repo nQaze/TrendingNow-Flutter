@@ -12,6 +12,8 @@ class MovieList extends StatefulWidget {
 
 class MovieListState extends State<MovieList> {
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +38,7 @@ class MovieListState extends State<MovieList> {
         builder: (context, AsyncSnapshot<List<Movie>> snapshot) {
           if (snapshot.hasData) {
             return RefreshIndicator(
+              key: _refreshIndicatorKey,
               child: buildList(snapshot),
               onRefresh: bloc.fetchMovies,
             );
