@@ -15,7 +15,15 @@ class MoviesBloc {
     if (movies.isEmpty){
       GetMovieResponse movieResponse = await _repository.fetchAllMovies();
       DBProvider.db.insertAllMovies(movieResponse.movies);
+      movies = await DBProvider.db.getAllMovies();
     }
+    _moviesFetcher.sink.add(movies);
+  }
+
+  Future<void> fetchMovies() async {
+    GetMovieResponse movieResponse = await _repository.fetchAllMovies();
+    DBProvider.db.insertAllMovies(movieResponse.movies);
+    List<Movie> movies = await DBProvider.db.getAllMovies();
     _moviesFetcher.sink.add(movies);
   }
 

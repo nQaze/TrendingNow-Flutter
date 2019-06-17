@@ -35,7 +35,10 @@ class MovieListState extends State<MovieList> {
         stream: bloc.allMovies,
         builder: (context, AsyncSnapshot<List<Movie>> snapshot) {
           if (snapshot.hasData) {
-            return buildList(snapshot);
+            return RefreshIndicator(
+              child: buildList(snapshot),
+              onRefresh: bloc.fetchMovies,
+            );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
