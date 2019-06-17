@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../models/movie.dart';
 
 class MovieDetails extends StatefulWidget {

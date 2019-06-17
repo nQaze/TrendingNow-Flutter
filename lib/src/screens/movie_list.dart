@@ -33,7 +33,7 @@ class MovieListState extends State<MovieList> {
       ),
       body: StreamBuilder(
         stream: bloc.allMovies,
-        builder: (context, AsyncSnapshot<GetMovieResponse> snapshot) {
+        builder: (context, AsyncSnapshot<List<Movie>> snapshot) {
           if (snapshot.hasData) {
             return buildList(snapshot);
           } else if (snapshot.hasError) {
@@ -47,9 +47,9 @@ class MovieListState extends State<MovieList> {
     );
   }
 
-  Widget buildList(AsyncSnapshot<GetMovieResponse> snapshot) {
+  Widget buildList(AsyncSnapshot<List<Movie>> snapshot) {
     return ListView.builder(
-        itemCount: snapshot.data.results.length,
+        itemCount: snapshot.data.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
             elevation: 12.0,
@@ -67,7 +67,7 @@ class MovieListState extends State<MovieList> {
                             fit: BoxFit.cover,
                             colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
                             image: new NetworkImage(
-                              'https://image.tmdb.org/t/p/w500${snapshot.data.results[index].backdrop_path}',
+                              'https://image.tmdb.org/t/p/w500${snapshot.data[index].backdrop_path}',
                             ),
                           ),
                       ),
@@ -76,7 +76,7 @@ class MovieListState extends State<MovieList> {
                       alignment: Alignment.bottomLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Text(snapshot.data.results[index].title,
+                        child: Text(snapshot.data[index].title,
                           style: TextStyle(color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -96,7 +96,7 @@ class MovieListState extends State<MovieList> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(snapshot.data.results[index].vote_average.toString(),
+                            child: Text(snapshot.data[index].vote_average.toString(),
                               style: TextStyle(color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -116,12 +116,12 @@ class MovieListState extends State<MovieList> {
     );
   }
 
-  openDetailPage(GetMovieResponse data, int index) {
+  openDetailPage(List<Movie> movies, int index) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
         return MovieDetails(
-          movie: data.results[index],
+          movie: movies[index],
         );
       }),
     );
